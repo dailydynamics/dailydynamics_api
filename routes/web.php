@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::name('auth.')->group(function () {
+    Route::get('login', [AuthController::class, 'login'])->name('login');
+    Route::post('login', [AuthController::class, 'loginPost'])->name('login');
+    Route::get('forgot-password', [AuthController::class, 'forgotpswd'])->name('forgotpswd');
+    Route::post('forgot-password', [AuthController::class, 'forgotPost'])->name('forgotpswd');
+});
+
+
+Route::get('dashboard', function () {
+    return view('dashboard.index');
+})->name('dashboard');
