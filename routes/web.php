@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Dashboard\ContactController;
+use App\Http\Controllers\Dashboard\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +28,5 @@ Route::name('auth.')->group(function () {
 });
 
 
-Route::get('dashboard', function () {
-    return view('dashboard.index');
-})->name('dashboard');
+Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('contacts', [ContactController::class, 'index'])->name('contacts');

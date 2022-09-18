@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\ContactController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+
+Route::prefix('dashboard')->group(function () {
+    Route::prefix('contacts')->group(function () {
+        Route::get('/', [ContactController::class, 'list']);
+        Route::get('{contact}', [ContactController::class, 'show']);
+        Route::post('store', [ContactController::class, 'store']);
+    });
 });
