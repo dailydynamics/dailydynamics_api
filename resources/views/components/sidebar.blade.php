@@ -18,7 +18,11 @@
             </div>
         </div>
         <div class="navbar-nav w-100">
-            <a href="index.html" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+            <a href="{{ route('dashboard') }}"
+                class="nav-item nav-link @if (Route::current()->getName() == 'dashboard') active @endif">
+                <i class="fa fa-tachometer-alt me-2"></i>
+                Dashboard
+            </a>
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
                         class="fa fa-laptop me-2"></i>Elements</a>
