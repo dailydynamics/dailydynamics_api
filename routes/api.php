@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::prefix('dashboard')->group(function () {
+Route::middleware(['cors'])->prefix('dashboard')->group(function () {
     Route::prefix('contacts')->group(function () {
         Route::get('/', [ContactController::class, 'list']);
         Route::get('{contact}', [ContactController::class, 'show']);
