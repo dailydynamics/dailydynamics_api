@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Traits\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ContactResource;
 use App\Models\Contact;
@@ -9,17 +10,19 @@ use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
+    use ApiResponse;
     public function index()
     {
         return view('dashboard.contacts');
     }
     public function list()
     {
-        return ContactResource::collection(Contact::all());
+        return
+            $this->success(ContactResource::collection(Contact::all()), 'Fetched Successfully', 200);
     }
     public function show(Contact $contact)
     {
-        return new ContactResource($contact);
+        return $this->success(new ContactResource($contact), 'Fetched Successfully', 200);
     }
     public function store(Request $request)
     {
@@ -37,6 +40,6 @@ class ContactController extends Controller
         $contact->subject = $request->subject;
         $contact->message = $request->message;
         $contact->save();
-        return response(new ContactResource($contact), 201);
+        return  response(new ContactResource($contact), 201);
     }
 }
