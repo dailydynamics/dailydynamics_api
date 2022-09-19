@@ -40,6 +40,6 @@ class ContactController extends Controller
         $contact->subject = $request->subject;
         $contact->message = $request->message;
         $contact->save();
-        return  response(new ContactResource($contact), 201);
+        return  $this->success(new ContactResource($contact), 'Created Successfully', 201);
     }
 }

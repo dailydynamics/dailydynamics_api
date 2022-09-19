@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\Dashboard\ContactController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,3 +28,6 @@ Route::middleware(['cors'])->prefix('dashboard')->group(function () {
         Route::post('store', [ContactController::class, 'store']);
     });
 });
+
+Route::resource('banner', BannerController::class)->middleware(['cors']);
+Route::get('topBanners', [BannerController::class, 'recent']);

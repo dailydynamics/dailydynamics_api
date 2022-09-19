@@ -22,7 +22,6 @@ class ContactSeeder extends Seeder
             'subject' => 'New Enquiry',
             'phone' => '+919544850772',
             'message' => 'You have a new message',
-
         ]);
     }
 }
