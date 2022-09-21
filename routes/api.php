@@ -4,6 +4,7 @@ use App\Http\Controllers\ApiAuthController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\Dashboard\ContactController;
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
@@ -23,7 +24,8 @@ use Illuminate\Support\Facades\Route;
 
 // ***************ROUTES FOR DASHBOARD ****************************************
 Route::middleware(['cors'])->prefix('dashboard')->group(function () {
-
+    Route::get('stats', [DashboardController::class, 'userStats']);
+    Route::get('recent-bookings', [DashboardController::class, 'recentBookings']);
     Route::prefix('contacts')->group(function () {
         Route::get('/', [ContactController::class, 'list']);
         Route::get('{contact}', [ContactController::class, 'show']);

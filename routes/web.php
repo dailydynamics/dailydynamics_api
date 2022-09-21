@@ -30,3 +30,5 @@ Route::name('auth.')->group(function () {
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('contacts', [ContactController::class, 'index'])->name('contacts');
+Route::get('users', [DashboardController::class, 'userspage'])->name('users');
+Route::get('notofocations', [DashboardController::class, 'notifications'])->name('notifications');

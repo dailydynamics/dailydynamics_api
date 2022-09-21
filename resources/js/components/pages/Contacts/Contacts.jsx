@@ -47,7 +47,6 @@ const Contacts = () => {
         <CardWrapper>
             <div className="d-flex align-items-center justify-content-between mb-4">
                 <h6 className="mb-0">Contact Enquiries</h6>
-                <a href="">Show All</a>
             </div>
             <div className="table-responsive">
                 <table className="table text-start align-middle table-bordered table-hover mb-0">

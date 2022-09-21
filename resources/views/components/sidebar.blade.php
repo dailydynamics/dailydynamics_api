@@ -35,6 +35,11 @@
             <a href="{{ route('contacts') }}"
                 class="nav-item nav-link @if (Route::current()->getName() == 'contacts') active @endif"><i
                     class="fa fa-th me-2"></i>Contacts</a>
+            <a href="{{ route('users') }}" class="nav-item nav-link @if (Route::current()->getName() == 'users') active @endif"><i
+                    class="fa fa-users me-2"></i>Users</a>
+            <a href="{{ route('notifications') }}"
+                class="nav-item nav-link @if (Route::current()->getName() == 'notifications') active @endif"><i
+                    class="fa fa-keyboard me-2"></i>Notifications</a>
             <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>
             <a href="table.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Tables</a>
             <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Charts</a>

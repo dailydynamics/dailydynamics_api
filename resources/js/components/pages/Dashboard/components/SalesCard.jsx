@@ -7,7 +7,7 @@ const SalesCard = ({ title, price, iconType }) => {
                 <i className={`fa fa-chart-${iconType} fa-3x text-primary`}></i>
                 <div className="ms-3">
                     <p className="mb-2">{title}</p>
-                    <h6 className="mb-0">${price}</h6>
+                    <h6 className="mb-0">{price}</h6>
                 </div>
             </div>
         </div>
