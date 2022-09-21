@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 
 // ***************ROUTES FOR DASHBOARD ****************************************
 Route::middleware(['cors'])->prefix('dashboard')->group(function () {
+
     Route::prefix('contacts')->group(function () {
         Route::get('/', [ContactController::class, 'list']);
         Route::get('{contact}', [ContactController::class, 'show']);

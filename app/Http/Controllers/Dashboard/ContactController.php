@@ -14,7 +14,7 @@ class ContactController extends Controller
     use ApiResponse;
     public function index()
     {
-        return view('dashboard.contacts');
+        return view('contacts');
     }
     public function list()
     {
