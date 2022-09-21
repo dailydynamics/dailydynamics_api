@@ -24,7 +24,11 @@ class StoreBookingRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'patient_name' => 'required',
+            'contact' => 'required',
+            'location_id' => 'required',
+            'remarks' => 'required',
+            'type' => 'required',
         ];
     }
 }

@@ -5,9 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Notification;
 use App\Http\Requests\StoreNotificationRequest;
 use App\Http\Requests\UpdateNotificationRequest;
+use App\Http\Resources\NotificationResource;
+use App\Traits\ApiResponse;
+use Exception;
+use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
+    use ApiResponse;
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +20,11 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            return $this->success(NotificationResource::collection(Notification::all()));
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -36,7 +45,15 @@ class NotificationController extends Controller
      */
     public function store(StoreNotificationRequest $request)
     {
-        //
+        try {
+            $notification = new Notification();
+            $notification->title = $request->title;
+            $notification->details = $request->details;
+            $notification->update();
+            return $this->success(new NotificationResource($notification), 'Created Success', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -47,7 +64,11 @@ class NotificationController extends Controller
      */
     public function show(Notification $notification)
     {
-        //
+        try {
+            return $this->success(new NotificationResource($notification), 'Fetched Success', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -70,7 +91,14 @@ class NotificationController extends Controller
      */
     public function update(UpdateNotificationRequest $request, Notification $notification)
     {
-        //
+        try {
+            $notification->title = $request->title;
+            $notification->details = $request->details;
+            $notification->update();
+            return $this->success(new NotificationResource($notification), 'Update Success', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -81,6 +109,19 @@ class NotificationController extends Controller
      */
     public function destroy(Notification $notification)
     {
-        //
+        try {
+            $notification->delete();
+            return $this->success();
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
+    }
+    public function history(Request $request)
+    {
+        try {
+            return $this->success();
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 }
