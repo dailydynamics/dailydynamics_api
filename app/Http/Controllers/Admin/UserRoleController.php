@@ -6,9 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\UserRole;
 use App\Http\Requests\StoreUserRoleRequest;
 use App\Http\Requests\UpdateUserRoleRequest;
+use App\Http\Resources\UserRoleResource;
+use App\Traits\ApiResponse;
+use Exception;
 
 class UserRoleController extends Controller
 {
+    use ApiResponse;
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +20,11 @@ class UserRoleController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            return $this->success(UserRoleResource::collection(UserRole::all()), 'success', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -37,7 +45,13 @@ class UserRoleController extends Controller
      */
     public function store(StoreUserRoleRequest $request)
     {
-        //
+        try {
+            $userRole = new UserRole();
+            $userRole->name = $request->name;
+            return $this->success(new UserRoleResource($userRole), 'Created', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -48,7 +62,11 @@ class UserRoleController extends Controller
      */
     public function show(UserRole $userRole)
     {
-        //
+        try {
+            return $this->success(new UserRoleResource($userRole), 'Success', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -71,7 +89,13 @@ class UserRoleController extends Controller
      */
     public function update(UpdateUserRoleRequest $request, UserRole $userRole)
     {
-        //
+        try {
+            $userRole->name = $request->name;
+            $userRole->update();
+            return $this->success(new UserRoleResource($userRole), 'Updated', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -82,6 +106,11 @@ class UserRoleController extends Controller
      */
     public function destroy(UserRole $userRole)
     {
-        //
+        try {
+            $userRole->delete();
+            return $this->success('', 'Deleted', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 }

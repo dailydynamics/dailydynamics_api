@@ -6,9 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Http\Requests\StoreBookingRequest;
 use App\Http\Requests\UpdateBookingRequest;
+use App\Http\Resources\BookingResource;
+use App\Traits\ApiResponse;
+use Exception;
 
 class BookingController extends Controller
 {
+    use ApiResponse;
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +20,11 @@ class BookingController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            return $this->success(BookingResource::collection(Booking::all()), 'Fetched Successfully', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -37,7 +45,19 @@ class BookingController extends Controller
      */
     public function store(StoreBookingRequest $request)
     {
-        //
+        try {
+            $validated = $request->validated();
+            $booking = new Booking();
+            $booking->patient_name = $request->patient_name;
+            $booking->contact = $request->contact;
+            $booking->location_id = $request->location_id;
+            $booking->remark = $request->remark;
+            $booking->type = $request->type;
+            $booking->save();
+            return $this->success(new BookingResource($booking), 'success', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -48,7 +68,11 @@ class BookingController extends Controller
      */
     public function show(Booking $booking)
     {
-        //
+        try {
+            return $this->success(new BookingResource($booking), 'Fetched Success', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -71,7 +95,17 @@ class BookingController extends Controller
      */
     public function update(UpdateBookingRequest $request, Booking $booking)
     {
-        //
+        try {
+            $booking->patient_name = $request->patient_name;
+            $booking->contact = $request->contact;
+            $booking->location_id = $request->location_id;
+            $booking->remark = $request->remark;
+            $booking->type = $request->type;
+            $booking->update();
+            return $this->success(new BookingResource($booking), 'Update Success', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -82,6 +116,11 @@ class BookingController extends Controller
      */
     public function destroy(Booking $booking)
     {
-        //
+        try {
+            $booking->delete();
+            return $this->success();
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 }

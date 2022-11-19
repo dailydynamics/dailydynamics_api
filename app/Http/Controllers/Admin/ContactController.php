@@ -6,9 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
+use App\Http\Resources\ContactResource;
+use App\Traits\ApiResponse;
+use Exception;
 
 class ContactController extends Controller
 {
+    use ApiResponse;
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +20,12 @@ class ContactController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            return
+                $this->success(ContactResource::collection(Contact::all()), 'Fetched Successfully', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -37,7 +46,25 @@ class ContactController extends Controller
      */
     public function store(StoreContactRequest $request)
     {
-        //
+        try {
+            $request->validate([
+                'name' => 'bail|required',
+                'phone' => 'bail|required',
+                'email' => 'bail|required',
+                'subject' => 'bail|required',
+                'message' => 'bail|required',
+            ]);
+            $contact = new Contact();
+            $contact->name = $request->name;
+            $contact->phone = $request->phone;
+            $contact->email = $request->email;
+            $contact->subject = $request->subject;
+            $contact->message = $request->message;
+            $contact->save();
+            return  $this->success(new ContactResource($contact), 'Created Successfully', 201);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -48,7 +75,11 @@ class ContactController extends Controller
      */
     public function show(Contact $contact)
     {
-        //
+        try {
+            return $this->success(new ContactResource($contact), 'Fetched Successfully', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -82,6 +113,11 @@ class ContactController extends Controller
      */
     public function destroy(Contact $contact)
     {
-        //
+        try {
+            $contact->delete();
+            return $this->success('Deleted', 'Contact Deleted', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 }

@@ -6,9 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UserResource;
+use App\Traits\ApiResponse;
+use Exception;
 
 class UserController extends Controller
 {
+    use ApiResponse;
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +20,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            return $this->success(UserResource::collection(User::all()), 'success', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -32,7 +40,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreUserRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreUserRequest $request)
@@ -48,7 +56,11 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        try {
+            return $this->success(new UserResource($user), 'success', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -65,7 +77,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateUserRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
@@ -82,6 +94,10 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        try {
+            return $this->success(new UserResource($user), 'success', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 }

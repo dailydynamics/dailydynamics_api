@@ -6,9 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Location;
 use App\Http\Requests\StoreLocationRequest;
 use App\Http\Requests\UpdateLocationRequest;
+use App\Http\Resources\LocationResource;
+use App\Traits\ApiResponse;
+use Exception;
 
 class LocationController extends Controller
 {
+    use ApiResponse;
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +20,11 @@ class LocationController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            return $this->success(LocationResource::collection(Location::all()), 'success', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -37,7 +45,14 @@ class LocationController extends Controller
      */
     public function store(StoreLocationRequest $request)
     {
-        //
+        try {
+            $location = new Location();
+            $location->name = $request->name;
+            $location->details = $request->details;
+            return $this->success(new LocationResource($location), 'Created', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -48,7 +63,11 @@ class LocationController extends Controller
      */
     public function show(Location $location)
     {
-        //
+        try {
+            return $this->success(new LocationResource($location), 'Success', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -71,7 +90,14 @@ class LocationController extends Controller
      */
     public function update(UpdateLocationRequest $request, Location $location)
     {
-        //
+        try {
+            $location->name = $request->name;
+            $location->details = $request->details;
+            $location->update();
+            return $this->success(new LocationResource($location), 'Updated', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -82,6 +108,11 @@ class LocationController extends Controller
      */
     public function destroy(Location $location)
     {
-        //
+        try {
+            $location->delete();
+            return $this->success('', 'Deleted', 200);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 400);
+        }
     }
 }
