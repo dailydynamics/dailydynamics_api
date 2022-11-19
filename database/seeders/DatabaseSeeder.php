@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             // BookingSeeder::class,
             LocationSeeder::class,
             NotificationSeeder::class,
+            AdminSeeder::class,
         ]);
     }
 }

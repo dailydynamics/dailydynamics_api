@@ -16,7 +16,7 @@ class AuthController extends Controller
     }
     public function loginPost(Request $request)
     {
-        return redirect()->route('dashboard');
+        return redirect()->route('home');
     }
     public function forgotPost(Request $request)
     {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApiAuthController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BookingController;
@@ -22,7 +23,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
 // ***************ROUTES FOR DASHBOARD ****************************************
+
+Route::post('dashboard/admin/login', [AdminController::class, 'login'])->name('adminlogin');
+
 Route::middleware(['cors'])->prefix('dashboard')->group(function () {
     Route::get('stats', [DashboardController::class, 'userStats']);
     Route::get('recent-bookings', [DashboardController::class, 'recentBookings']);
@@ -51,7 +57,7 @@ Route::post('wesite/contact', [ContactController::class, 'store']);
 Route::post('login', [ApiAuthController::class, 'login']);
 Route::post('register', [ApiAuthController::class, 'register']);
 
-Route::middleware('auth:sanctum')->group(
+Route::middleware(['cors'])->group(
     function () {
         Route::prefix('me')->group(function () {
             Route::get('/', [ApiAuthController::class, 'me']);
@@ -71,6 +77,5 @@ Route::middleware('auth:sanctum')->group(
         Route::get('notification/me', [NotificationController::class, 'history']);
     }
 );
-
 
 // **********************************************************************************

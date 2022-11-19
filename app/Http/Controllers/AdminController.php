@@ -5,9 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
+use App\Http\Resources\UserResource;
+use App\Traits\ApiResponse;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AdminController extends Controller
 {
+    use ApiResponse;
     /**
      * Display a listing of the resource.
      *
@@ -82,5 +89,27 @@ class AdminController extends Controller
     public function destroy(Admin $admin)
     {
         //
+    }
+    public function login(Request $request)
+    {
+        try {
+            $request->validate([
+                'email' => 'required',
+                'password' => 'required',
+            ]);
+
+            $user = Admin::where('email', $request->email)->first();
+
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                throw ValidationException::withMessages([
+                    'credential' => ['The provided credentials are incorrect.'],
+                ]);
+            }
+            $token = $user->createToken('email')->plainTextToken;
+
+            return $this->success(['user' => new UserResource($user), 'token' => $token], 'Login Success', 200);
+        } catch (Exception $ex) {
+            return $this->error($ex->getMessage(), 400);
+        }
     }
 }

@@ -128,7 +128,7 @@ class BookingController extends Controller
     public function history(Request $request)
     {
         try {
-            $user = $request->user();
+            // $user = $request->user();
             return $this->success(BookingResource::collection(Booking::all()), 'Fetched Successfully', 200);
         } catch (Exception $e) {
             return $this->error($e->getMessage(), 400);
